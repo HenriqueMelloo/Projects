@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calc-Fat</title>
+    <style>
+        /* Estilos para tornar o layout mais responsivo */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        label,
+        input,
+        button,
+        p {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        p {
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1> Calculadora de Fatura</h1>
+    <!-- Label e input para "Leitura Anterior" -->
+    <label for="leitAnterior">Leitura Anterior:</label>
+    <input type="number" placeholder="Leitura Anterior" id="leitAnterior" />
+    <!-- Label e input para "Leitura Atual" -->
+    <label for="leitAtual">Leitura Atual:</label>
+    <input type="number" placeholder="Leitura Atual" id="leitAtual" />
+    <!-- Botão de cálculo -->
+    <button id="calcular">Calcula</button>
+    <!-- Parágrafo para exibir o valor da corrida -->
+    <p id="resultado"></p>
+
+    <script>
+        // Função para formatar o valor como moeda
+        function formataMoeda(algumValor) {
+            var valorFormatado = algumValor.toFixed(2).replace('.', ',');
+            return valorFormatado;
+        }
+        // Função para calcular a fatura
+        function calculaFatura() {
+            // Obtém os valores das leituras anteriores e atuais
+            var leitAnterior = parseFloat(document.getElementById("leitAnterior").value);
+            var leitAtual = parseFloat(document.getElementById("leitAtual").value);
+
+            // Verifica se a leitura anterior é um número válido
+            var isLeitAnteriorVazio = isNaN(leitAnterior);
+
+            // Se a leitura anterior estiver vazia, exibe um alerta e interrompe o cálculo
+            if (isLeitAnteriorVazio) {
+                alert('Não temos o valor da leitura anterior');
+                return;
+            }
+            // Calcula o valor do consumo em R$
+            var consumo = (leitAtual - leitAnterior) * 0.834850;
+
+            // Calcula o valor da Iluminação Pública
+            var iluminacao_publica = consumo * 0.09342;
+
+            // Calcula o valor Pis
+            var pis = consumo * 0.00588;
+
+            // Calcula o valor de Confins
+            var confins = consumo * 0.02845;
+
+            // Calcula o valor final da fatura
+            var valor_final = consumo + iluminacao_publica + pis + confins;
+
+            // Exibe o valor da corrida formatado como moeda no parágrafo com id "resultado"
+            document.getElementById("resultado").innerText = "O valor da corrida é: R$ " + formataMoeda(valor_final);
+        }
+
+        // Adiciona um ouvinte de evento para o evento de toque no botão de cálculo
+        document.getElementById("calcular").ontouchend = calculaFatura;
+    </script>
+
+</body>
+
+</html>
