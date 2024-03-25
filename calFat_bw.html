@@ -4,96 +4,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calfat</title>
+    <title>Calfat - Calculadora de Fatura</title>
     <style>
-        /* CSS incorporado para alterar a cord do titulo */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
         h1 {
-            font-family: "Verdana";
-            color: red;
-            /* Define a cor do titulo */
+            text-align: center;
+            color: #333;
         }
 
         label {
-            font-family: "Roboto";
-            color: wheat;
-            background-color: black;
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
         }
 
-        input {
-            font-family: "Roboto";
-            color: blueviolet;
-            background-color: black;
-        }
-
-        /* Adiciona cor azul para o parágrafo */
-        p {
-            font-family: "Geneva";
-            color: blue;
-            /* Define a cor do texto do parágrafo como azul */
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
 
         button {
-            color: darkgreen;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
         }
     </style>
 </head>
 
 <body>
-    <center>
-        <h1> CALCULADORA DE FATURA </h1>
-        <!-- Label e input para "Leitura Anterior" -->
+    <div id="container">
+        <h1>Calculadora de Fatura</h1>
         <label for="leitAnterior">Leitura Anterior:</label>
-        <input type="number" placeholder="Leitura Anterior" id="leitAnterior" />
-        <br> <!-- Adicionado uma quebra de linha para melhorar a visualização -->
-        <!-- Label e input para "Leitura Atual" -->
+        <input type="number" placeholder="Leitura Anterior" id="leitAnterior" required>
         <label for="leitAtual">Leitura Atual:</label>
-        <input type="number" placeholder="Leitura Atual" id="leitAtual" />
-        <br> <!-- Adicionado uma quebra de linha para melhorar a visualização -->
-        <button onclick="calculaFatura();">Calcula</button>
-        <!-- Parágrafo para exibir o valor da corrida -->
+        <input type="number" placeholder="Leitura Atual" id="leitAtual" required>
+        <input type="checkbox" id="incluiPisConfins">
+        <label for="incluiPisConfins">Incluir PIS e COFINS</label>
+        <button onclick="calculaFatura()">Calcular</button>
         <p id="resultado"></p>
-        <center>
+    </div>
 
-            <script>
-                // Função para formatar o valor como moeda
-                function formataMoeda(algumValor) {
-                    var valorFormatado = algumValor.toFixed(2).replace('.', ',');
-                    return valorFormatado;
-                }
-                // Função para calcular a fatura
-                function calculaFatura() {
-                    // Obtém os valores das leituras anteriores e atuais
-                    var leitAnterior = parseFloat(document.getElementById("leitAnterior").value);
-                    var leitAtual = parseFloat(document.getElementById("leitAtual").value);
+    <script>
+        function calculaFatura() {
+            var leitAnterior = parseFloat(document.getElementById("leitAnterior").value);
+            var leitAtual = parseFloat(document.getElementById("leitAtual").value);
 
-                    // Verifica se a leitura anterior é um número válido
-                    var isLeitAnteriorVazio = isNaN(leitAnterior);
+            if (isNaN(leitAnterior) || isNaN(leitAtual)) {
+                alert('Por favor, insira valores válidos para as leituras.');
+                return;
+            }
 
-                    // Se a leitura anterior estiver vazia, exibe um alerta e interrompe o cálculo
-                    if (isLeitAnteriorVazio) {
-                        alert('Não temos o valor da leitura anterior');
-                        return;
-                    }
-                    // Calcula o valor do consumo em R$
-                    var consumo = (leitAtual - leitAnterior) * 0.834850;
+            var consumo = (leitAtual - leitAnterior) * 0.834850;
+            var iluminacao_publica = consumo * 0.09342;
+            var valor_final = consumo + iluminacao_publica;
 
-                    // Calcula o valor da Iluminação Pública
-                    var iluminacao_publica = consumo * 0.09342;
+            var incluiPisConfins = document.getElementById("incluiPisConfins").checked;
+            if (incluiPisConfins) {
+                var pis = consumo * 0.00588;
+                var confins = consumo * 0.02845;
+                valor_final += pis + confins;
+            }
 
-                    // Calcula o valor Pis
-                    var pis = consumo * 0.00588;
-
-                    // Calcula o valor de Confins
-                    var confins = consumo * 0.02845;
-
-                    // Calcula o valor final da fatura
-                    var valor_final = consumo + iluminacao_publica + pis + confins;
-
-                    // Exibe o valor da corrida formatado como moeda no parágrafo com id "resultado"
-                    document.getElementById("resultado").innerText = "O valor da corrida é: R$ " + formataMoeda(valor_final);
-                }
-            </script>
-
+            document.getElementById("resultado").innerText = "O valor da fatura é: R$ " + valor_final.toFixed(2);
+        }
+    </script>
 </body>
 
 </html>
