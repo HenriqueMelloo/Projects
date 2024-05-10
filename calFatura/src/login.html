@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required><br>
+        <button type="submit">Login</button>
+    </form>
+    <a href="cadastro.html">Cadastrar Usuário</a>
+    <a href="recuperar_senha.html">Recuperar Senha</a>
+
+    <div id="mensagemErro"></div>
+
+    <script>
+        var users = JSON.parse(localStorage.getItem('users')) || []; // Recuperando usuários do localStorage
+        var tentativas = 0;
+
+        // Função para fazer login
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevenir o envio do formulário
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var found = false;
+            // Verificar se as credenciais correspondem aos usuários cadastrados
+            users.forEach(function (user) {
+                if (user.username === username) {
+                    found = true;
+                    if (user.password === password) {
+                        alert("Login bem-sucedido! Redirecionando para a página principal.");
+                        window.location.href = "index.html"; // Redirecionar para a calculadora de fatura
+                    } else {
+                        document.getElementById("mensagemErro").innerText = "Senha inválida.";
+                        tentativas++;
+                        if (tentativas >= 3) {
+                            alert("Você excedeu o número de tentativas de login. Por favor, recupere sua senha.");
+                            window.location.href = "recuperar_senha.html"; // Redirecionar para a página de recuperação de senha
+                        }
+                    }
+                }
+            });
+            if (!found) {
+                document.getElementById("mensagemErro").innerText = "Usuário não cadastrado.";
+            }
+        });
+    </script>
+</body>
+
+</html>
