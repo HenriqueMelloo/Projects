@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha</title>
+</head>
+
+<body>
+    <h1>Recuperar Senha</h1>
+    <form id="recuperarSenhaForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required><br>
+        <label for="nomeMae">Primeiro Nome da Mãe:</label>
+        <input type="text" id="nomeMae" required><br>
+        <label for="dataNascimento">Data de Nascimento:</label>
+        <input type="date" id="dataNascimento" required><br>
+        <button type="submit">Recuperar Senha</button>
+    </form>
+    <a href="login.html">Voltar para o Login</a>
+
+    <div id="mensagemErro"></div>
+    <div id="senhaRecuperada" style="display: none;">
+        <h2>Senha Recuperada:</h2>
+        <p id="senha"></p>
+    </div>
+
+    <script>
+        var users = JSON.parse(localStorage.getItem('users')) || []; // Recuperando usuários do localStorage
+
+        // Função para recuperar senha
+        document.getElementById("recuperarSenhaForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevenir o envio do formulário
+            var username = document.getElementById("username").value;
+            var nomeMae = document.getElementById("nomeMae").value;
+            var dataNascimento = document.getElementById("dataNascimento").value;
+
+            // Convertendo data de nascimento para o formato armazenado no localStorage
+            var dataNascimentoFormatada = new Date(dataNascimento).toISOString().split('T')[0];
+
+            // Verificar se as informações fornecidas correspondem a um usuário cadastrado
+            var usuarioValido = users.find(function (user) {
+                return user.username === username && user.nomeMae === nomeMae && user.dataNascimento === dataNascimentoFormatada;
+            });
+
+            if (usuarioValido) {
+                // Exibir a senha recuperada
+                document.getElementById("senha").innerText = usuarioValido.password;
+                document.getElementById("senhaRecuperada").style.display = "block";
+                document.getElementById("mensagemErro").innerText = "";
+            } else {
+                document.getElementById("senhaRecuperada").style.display = "none";
+                document.getElementById("mensagemErro").innerText = "Usuário inválido.";
+            }
+        });
+    </script>
+</body>
+
+</html>
