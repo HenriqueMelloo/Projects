@@ -15,20 +15,3 @@ Ex:       4220 (Leitura Atual)
 R$    166,97   (Valor em Real)
 
 Onde o resultado final dará o valor em real como informado anteriormente "Valor de real em consumo de energia"
-
-Arquivos:
-
---(Versão Web teste)
-calFat_bw_v01.html (Primeira versão Web) primeira exibição web modelo.
-calFat_bw_v02.html (Segunda versão Web) segunda versão web aprumidora.
-
---(Versão Mobile teste)
-calFat_smrt_v01.html(Versão Mobile) Primeira versão teste.
-
---(Versão final)
-
-calFat_bw.html
-calFat_smrt.html
-
-
-Versões anteriores em branch edition.
