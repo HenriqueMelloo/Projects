@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calfat - Calculadora de Fatura</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../styles/styles_index.css">
 </head>
 
 <body>
@@ -20,12 +20,7 @@
         <button onclick="calculaFatura()">Calcular</button>
         <p id="resultado"></p>
         <br>
-        <button onclick="showCadastro()">Informações de Cadastro</button>
         <a href="#" onclick="logout()">Logout</a>
-    </div>
-
-    <div id="informacoesCadastro" style="display: none;">
-        <!-- Aqui serão exibidas as informações de cadastro -->
     </div>
 
     <script>
@@ -50,28 +45,6 @@
             }
 
             document.getElementById("resultado").innerText = "O valor da fatura é: R$ " + valor_final.toFixed(2);
-        }
-
-        // Função para mostrar as informações de cadastro
-        function showCadastro() {
-            var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            var informacoesCadastro = document.getElementById("informacoesCadastro");
-            informacoesCadastro.innerHTML = ""; // Limpar conteúdo antigo
-
-            if (currentUser) {
-                informacoesCadastro.style.display = "block";
-                informacoesCadastro.innerHTML += "<h2>Informações de Cadastro</h2>";
-                informacoesCadastro.innerHTML += "<p><strong>Nome Completo:</strong> " + currentUser.nomeCompleto + "</p>";
-                informacoesCadastro.innerHTML += "<p><strong>Data de Nascimento:</strong> " + currentUser.dataNascimento + "</p>";
-                informacoesCadastro.innerHTML += "<p><strong>Nome Completo da Mãe:</strong> " + currentUser.nomeMae + "</p>";
-                informacoesCadastro.innerHTML += "<p><strong>Código da Unidade:</strong> " + currentUser.idUnidade + "</p>";
-                informacoesCadastro.innerHTML += "<p><strong>Username:</strong> " + currentUser.username + "</p>";
-
-                // Botão para deletar usuário
-                informacoesCadastro.innerHTML += "<button onclick='deleteUser()'>Deletar Usuário</button>";
-            } else {
-                alert("Usuário não encontrado.");
-            }
         }
 
         // Função para deletar o usuário atual
